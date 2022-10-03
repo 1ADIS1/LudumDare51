@@ -1,0 +1,7 @@
+[gd_scene format=2]
+
+[node name="CPUParticles2D" type="CPUParticles2D"]
+position = Vector2( 328, 160 )
+explosiveness = 0.79
+emission_shape = 1
+emission_sphere_radius = 1.0

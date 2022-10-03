@@ -1,0 +1,97 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://scenes/Guard.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/HUD.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scripts/Main.gd" type="Script" id=4]
+[ext_resource path="res://scenes/BombZone.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/Glass.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/ValveDoor.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scripts/ValveDoor.gd" type="Script" id=8]
+[ext_resource path="res://scenes/DoorFrame.tscn" type="PackedScene" id=9]
+[ext_resource path="res://tilemaps/TileMap.tscn" type="PackedScene" id=10]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 327, 312 )
+
+[sub_resource type="Gradient" id=3]
+interpolation_mode = 2
+colors = PoolColorArray( 0.0198669, 0.0380561, 0.121094, 1, 1, 1, 1, 1 )
+
+[sub_resource type="GradientTexture" id=4]
+gradient = SubResource( 3 )
+
+[sub_resource type="Environment" id=2]
+background_mode = 4
+dof_blur_far_distance = 506.71
+dof_blur_far_transition = 5.49
+dof_blur_far_amount = 1.0
+dof_blur_near_distance = 1.18
+dof_blur_near_quality = 2
+adjustment_enabled = true
+adjustment_color_correction = SubResource( 4 )
+
+[node name="Bank" type="Node2D"]
+script = ExtResource( 4 )
+
+[node name="BankZone" type="Area2D" parent="."]
+position = Vector2( 436, 161 )
+collision_layer = 0
+collision_mask = 2
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BankZone"]
+position = Vector2( -21, -237 )
+shape = SubResource( 1 )
+
+[node name="BombZone" parent="." instance=ExtResource( 5 )]
+position = Vector2( 412, 122 )
+
+[node name="ValveDoor" parent="." instance=ExtResource( 7 )]
+position = Vector2( 516, 125 )
+script = ExtResource( 8 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 368, 392 )
+collision_layer = 3
+
+[node name="Windows" type="Node" parent="."]
+
+[node name="Glass" parent="Windows" instance=ExtResource( 6 )]
+position = Vector2( 456, 248 )
+
+[node name="Glass2" parent="Windows" instance=ExtResource( 6 )]
+position = Vector2( 472, 248 )
+
+[node name="Glass3" parent="Windows" instance=ExtResource( 6 )]
+position = Vector2( 520, 96 )
+
+[node name="HUD" parent="." instance=ExtResource( 3 )]
+
+[node name="Doors" type="Node" parent="."]
+
+[node name="DoorFrame" parent="Doors" instance=ExtResource( 9 )]
+position = Vector2( 311, 222 )
+
+[node name="DoorFrame2" parent="Doors" instance=ExtResource( 9 )]
+position = Vector2( 514, 175 )
+
+[node name="DoorFrame3" parent="Doors" instance=ExtResource( 9 )]
+position = Vector2( 516, 209 )
+rotation = 3.14159
+
+[node name="TileMap" parent="." instance=ExtResource( 10 )]
+tile_data = PoolIntArray( 262156, 0, 0, 589836, 0, 0, 589856, 1, 0, 589857, 1, 0, 655392, 1, 0, 655393, -1073741821, 0, 851987, 1, 0, 852000, 1, 0, 917516, 0, 0, 917535, -1610612733, 0, 917536, 1, 0, 983059, 1, 0, 983060, 1, 0, 983064, 1, 0, 983065, 1, 0, 983066, 1, 0, 983067, 1, 0, 983070, 1, 0, 983071, 1, 0, 983072, 1, 0, 1048592, 0, 0, 1179667, 0, 0, 1179673, 0, 0 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 2 )
+
+[node name="Guard" parent="." instance=ExtResource( 1 )]
+position = Vector2( 356, 296 )
+playerNodePath = NodePath("../Player")
+
+[connection signal="body_shape_entered" from="BankZone" to="HUD" method="_on_BankZone_entered"]
+[connection signal="bomb_exploded" from="BombZone" to="ValveDoor" method="_on_BombZone_bomb_exploded"]
+[connection signal="time_out" from="HUD" to="." method="_on_HUD_time_out"]

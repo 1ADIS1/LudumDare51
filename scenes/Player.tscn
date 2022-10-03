@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scripts/Player.gd" type="Script" id=1]
+[ext_resource path="res://scripts/CameraController.gd" type="Script" id=2]
+[ext_resource path="res://art/sheet1.png" type="Texture" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 4.0
+
+[node name="Player" type="RigidBody2D"]
+mode = 2
+gravity_scale = 0.0
+script = ExtResource( 1 )
+speed = 125
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.582391, -0.0835218 )
+shape = SubResource( 1 )
+
+[node name="Polygon2D" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+hframes = 13
+vframes = 2
+frame = 13
+
+[node name="Camera2D" type="Camera2D" parent="Polygon2D"]
+current = true
+zoom = Vector2( 0.25, 0.25 )
+smoothing_enabled = true
+smoothing_speed = 10.0
+drag_margin_left = 0.07
+drag_margin_top = 0.0
+drag_margin_right = 0.05
+drag_margin_bottom = 0.14
+editor_draw_limits = true
+editor_draw_drag_margin = true
+script = ExtResource( 2 )
